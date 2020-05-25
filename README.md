@@ -16,18 +16,18 @@ This setup assumes that you are running `MySql` on in Docker.
 This project requires a running MySQL database. To set one up with Docker, run:
 
 ```
-docker run -d -p 3306:3306 --name book_library_api -e MYSQL_ROOT_PASSWORD=<PASSWORD> mysql
+docker run -d -p 3306:3306 --name book_library -e MYSQL_ROOT_PASSWORD=<PASSWORD> mysql
 ```
 To start the database, run:
 
 ```
-docker start book_library_api
+docker start book_library
 ```
 
 To stop the database, run:
 
 ```
-docker stop book_library_api
+docker stop book_library
 ```
 
 The `create-database` and `drop-database` scripts will run automatically before and after your tests to handle database setup/teardown/
