@@ -18,6 +18,18 @@ This project requires a running MySQL database. To set one up with Docker, run:
 ```
 docker run -d -p 3306:3306 --name book_library_api -e MYSQL_ROOT_PASSWORD=<PASSWORD> mysql
 ```
+To start the database, run:
+
+```
+docker start book_library_api
+```
+
+To stop the database, run:
+
+```
+docker stop book_library_api
+```
+
 The `create-database` and `drop-database` scripts will run automatically before and after your tests to handle database setup/teardown/
 
 Create a new file in the project root called `.env.test` and add the database connection details as set out in `.env.example`.
