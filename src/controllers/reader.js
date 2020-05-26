@@ -1,7 +1,7 @@
 const { Reader } = require('../models');
 
 const getReaders = (_, res) => {
-  Reader.findAll().then(readers => {
+  Reader.findAll().then((readers) => {
     res.status(200).json(readers);
   });
 };
