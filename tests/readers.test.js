@@ -25,6 +25,30 @@ describe('/readers', () => {
         expect(newReaderRecord.email).to.equal('future_ms_darcy@gmail.com');
         expect(newReaderRecord.password).to.equal('somepassword');
       });
+      it('returns error if model format requirements are not fullfilled', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+          email: 'future_ms_darcy-gmail.com',
+          password: 'pass',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(400);
+        expect(response.body.errors.length).to.equal(2);
+        expect(newReaderRecord).to.equal(null);
+      });
+      it('returns error if model fields are null', async () => {
+        const response = await request(app).post('/readers').send({
+          name: 'Elizabeth Bennet',
+        });
+        const newReaderRecord = await Reader.findByPk(response.body.id, {
+          raw: true,
+        });
+        expect(response.status).to.equal(400);
+        expect(response.body.errors.length).to.equal(2);
+        expect(newReaderRecord).to.equal(null);
+      });
     });
   });
 
@@ -40,8 +64,16 @@ describe('/readers', () => {
           email: 'future_ms_darcy@gmail.com',
           password: 'somepassword',
         }),
-        Reader.create({ name: 'Arya Stark', email: 'vmorgul@me.com', password: 'somepassword' }),
-        Reader.create({ name: 'Lyra Belacqua', email: 'darknorth123@msn.org', password: 'somepassword' }),
+        Reader.create({
+          name: 'Arya Stark',
+          email: 'vmorgul@me.com',
+          password: 'somepassword',
+        }),
+        Reader.create({
+          name: 'Lyra Belacqua',
+          email: 'darknorth123@msn.org',
+          password: 'somepassword',
+        }),
       ]);
     });
 
