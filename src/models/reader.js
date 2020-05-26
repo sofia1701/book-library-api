@@ -32,9 +32,9 @@ module.exports = (sequelize, DataTypes) => {
           args: [true],
           msg: 'Password cannot be empty',
         },
-        isLessThan8Characters(value) {
-          if (value.length < 8)
-            throw new Error('Password needs to be longer than 8 characters');
+        len: {
+          args: [8],
+          msg: "Password needs to be longer than 8 characters"
         },
       },
     },
