@@ -26,8 +26,20 @@ const getBookById = (req, res) => {
   });
 };
 
+const updateBookById = (req, res) => {
+  const { id } = req.params;
+  Book.update(req.body, { where: { id } })
+    .then(([updatedBook]) => {
+      if (!updatedBook) {
+        return res.status(404).json({ error: 'The book could not be found' });
+      }
+      return res.status(200).json(updatedBook);
+    });
+};
+
 module.exports = {
   getBooks,
   createBook,
   getBookById,
+  updateBookById,
 };

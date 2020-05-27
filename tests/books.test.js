@@ -92,5 +92,25 @@ describe('/readers', () => {
         expect(response.body.error).to.equal('The book could not be found');
       });
     });
+    describe('PATCH /books/:id', () => {
+      it('updates book records by id', async () => {
+        const book = books[0];
+        const response = await request(app)
+          .patch(`/books/${book.id}`)
+          .send({ author: 'New Author' });
+        const updatedBook = await Book.findByPk(book.id, { raw: true });
+
+        expect(response.status).to.equal(200);
+        expect(updatedBook.author).to.equal('New Author');
+      });
+      it('returns a 404 if book is not found', async () => {
+        const response = await request(app)
+          .patch('/books/7000')
+          .send({ author: 'New Author' });
+
+        expect(response.status).to.equal(404);
+        expect(response.body.error).to.equal('The book could not be found');
+      });
+    });
   });
 });
