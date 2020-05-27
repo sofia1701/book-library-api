@@ -15,8 +15,19 @@ const createBook = (req, res) => {
     });
 };
 
+const getBookById = (req, res) => {
+  const { id } = req.params;
+
+  Book.findByPk(id).then((book) => {
+    if (!book) {
+      return res.status(404).json({ error: 'The book could not be found' });
+    }
+    return res.status(200).json(book);
+  });
+};
 
 module.exports = {
   getBooks,
   createBook,
+  getBookById,
 };
