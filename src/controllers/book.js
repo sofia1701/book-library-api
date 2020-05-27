@@ -37,9 +37,21 @@ const updateBookById = (req, res) => {
     });
 };
 
+const deleteBookById = (req, res) => {
+  const { id } = req.params;
+  Book.destroy({ where: { id } })
+    .then((deletedBook) => {
+      if (!deletedBook) {
+        return res.status(400).json({ error: 'The book could not be found' });
+      }
+      return res.status(204).json(deletedBook);
+    });
+};
+
 module.exports = {
   getBooks,
   createBook,
   getBookById,
   updateBookById,
+  deleteBookById,
 };

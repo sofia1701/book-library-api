@@ -11,6 +11,7 @@ router
 router
   .route('/:id')
   .get(bookController.getBookById)
-  .patch(bookController.updateBookById);
-
+  .patch(bookController.updateBookById)
+  .delete(bookController.deleteBookById);
+  
 module.exports = router;

@@ -4,7 +4,7 @@ const request = require('supertest');
 const { Book } = require('../src/models');
 const app = require('../src/app');
 
-describe('/readers', () => {
+describe('/books', () => {
   before(async () => Book.sequelize.sync());
 
   describe('with no records in the database', () => {
@@ -109,6 +109,23 @@ describe('/readers', () => {
           .send({ author: 'New Author' });
 
         expect(response.status).to.equal(404);
+        expect(response.body.error).to.equal('The book could not be found');
+      });
+    });
+    describe('DELETE /books/:id', () => {
+      it('deletes a book record by id', async () => {
+        const book = books[0];
+        const response = await request(app).delete(`/books/${book.id}`);
+
+        const deletedBook = await Book.findByPk(book.id, { raw: true });
+
+        expect(response.status).to.equal(204);
+        expect(deletedBook).to.equal(null);
+      });
+      it('returns a 404 if book is not found', async () => {
+        const response = await request(app).delete('/books/7000');
+
+        expect(response.status).to.equal(400);
         expect(response.body.error).to.equal('The book could not be found');
       });
     });
