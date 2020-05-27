@@ -38,4 +38,43 @@ describe('/readers', () => {
       });
     });
   });
+
+  describe('with records in the database', () => {
+    let books;
+
+    beforeEach(async () => {
+      await Book.destroy({ where: {} });
+
+      books = await Promise.all([
+        Book.create({
+          title: 'The Highrise',
+          author: 'J.G. Ballard',
+        }),
+        Book.create({
+          title: 'The Catcher In The Rye',
+          author: 'J.D. Salinger',
+        }),
+        Book.create({
+          title: 'Brave New World',
+          author: 'Aldous Huxley',
+        }),
+      ]);
+    });
+
+    describe('GET /books', () => {
+      it('gets all book records', async () => {
+        const response = await request(app).get('/books');
+
+        expect(response.status).to.equal(200);
+        expect(response.body.length).to.equal(3);
+
+        response.body.forEach((book) => {
+          const expected = books.find((b) => b.id === book.id);
+
+          expect(book.title).to.equal(expected.title);
+          expect(book.author).to.equal(expected.author);
+        });
+      });
+    });
+  });
 });
