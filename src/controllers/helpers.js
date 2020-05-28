@@ -11,15 +11,15 @@ const getModel = (model) => {
 const getAllItems = (res, model) => {
   const Model = getModel(model);
 
-  return Model.findAll().then((allItems) => {
-    res.status(200).json(allItems);
+  Model.findAll().then((allItems) => {
+    return res.status(200).json(allItems);
   });
 };
 
 const createItems = (res, model, item) => {
   const Model = getModel(model);
 
-  return Model.create(item)
+  Model.create(item)
     .then((itemCreated) => res.status(201).json(itemCreated))
     .catch((error) => {
       const errorMessages = error.errors.map((err) => err.message);
@@ -30,7 +30,7 @@ const createItems = (res, model, item) => {
 const updateItems = (res, model, item, id) => {
   const Model = getModel(model);
 
-  return Model.update(item, { where: { id } }).then(([recordsUpdated]) => {
+  Model.update(item, { where: { id } }).then(([recordsUpdated]) => {
     if (!recordsUpdated) {
       res.status(404).json({ error: 'The item could not be found.' });
     } else {
@@ -44,7 +44,7 @@ const updateItems = (res, model, item, id) => {
 const getItemById = (res, model, id) => {
   const Model = getModel(model);
 
-  return Model.findByPk(id).then((item) => {
+  Model.findByPk(id).then((item) => {
     if (!item) {
       res.status(404).json({ error: 'The item could not be found.' });
     } else {
@@ -56,7 +56,7 @@ const getItemById = (res, model, id) => {
 const deleteItemById = (res, model, id) => {
   const Model = getModel(model);
 
-  return Model.findByPk(id).then((foundItem) => {
+  Model.findByPk(id).then((foundItem) => {
     if (!foundItem) {
       res.status(404).json({ error: 'The item could not be found.' });
     } else {
