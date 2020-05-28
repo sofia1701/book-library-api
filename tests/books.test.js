@@ -76,7 +76,7 @@ describe('/books', () => {
         });
       });
     });
-    describe('GET /books/:id', () => {
+    describe('GET /books/:id,:title', () => {
       it('gets books records by id', async () => {
         const book = books[0];
         const response = await request(app).get(`/books/${book.id}`);
