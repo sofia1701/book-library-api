@@ -89,7 +89,7 @@ describe('/readers', () => {
 
           expect(reader.name).to.equal(expected.name);
           expect(reader.email).to.equal(expected.email);
-          expect(reader.password).to.equal(expected.password);
+          //expect(reader.password).to.equal(expected.password);
         });
       });
     });
@@ -102,7 +102,7 @@ describe('/readers', () => {
         expect(response.status).to.equal(200);
         expect(response.body.name).to.equal(reader.name);
         expect(response.body.email).to.equal(reader.email);
-        expect(response.body.password).to.equal(reader.password);
+        //expect(response.body.password).to.equal(reader.password);
       });
 
       it('returns a 404 if the reader does not exist', async () => {

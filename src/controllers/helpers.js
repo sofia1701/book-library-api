@@ -11,8 +11,8 @@ const getModel = (model) => {
 const getAllItems = (res, model) => {
   const Model = getModel(model);
 
-  Model.findAll().then((allItems) => {
-    return res.status(200).json(allItems);
+  Model.findAll({ attributes: { exclude: ['password'] } }).then((allItems) => {
+    res.status(200).json(allItems);
   });
 };
 
@@ -34,7 +34,7 @@ const updateItems = (res, model, item, id) => {
     if (!recordsUpdated) {
       res.status(404).json({ error: 'The item could not be found.' });
     } else {
-      Model.findByPk(id).then((updatedItem) => {
+      Model.findByPk(id, { attributes: { exclude: ['password'] } }).then((updatedItem) => {
         res.status(200).json(updatedItem);
       });
     }
@@ -44,7 +44,7 @@ const updateItems = (res, model, item, id) => {
 const getItemById = (res, model, id) => {
   const Model = getModel(model);
 
-  Model.findByPk(id).then((item) => {
+  Model.findByPk(id, { attributes: { exclude: ['password'] } }).then((item) => {
     if (!item) {
       res.status(404).json({ error: 'The item could not be found.' });
     } else {
