@@ -37,9 +37,6 @@ module.exports = (sequelize, DataTypes) => {
           msg: "Password needs to be longer than 8 characters"
         },
       },
-      defaultScope: {
-        attributes: { exclude: ['password'] },
-      },
     },
   };
 
