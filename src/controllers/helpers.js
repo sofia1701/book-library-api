@@ -21,7 +21,8 @@ const createItems = (res, model, item) => {
 
   Model.create(item)
     .then((itemCreated) => {
-      delete itemCreated.dataValues.password;
+      const hidePassword = itemCreated;
+      delete hidePassword.dataValues.password;
       res.status(201).json(itemCreated);
     })
     .catch((error) => {
