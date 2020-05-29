@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         len: {
           args: [8],
-          msg: "Password needs to be longer than 8 characters"
+          msg: 'Password needs to be longer than 8 characters',
         },
       },
     },

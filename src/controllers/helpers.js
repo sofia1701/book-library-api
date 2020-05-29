@@ -20,7 +20,10 @@ const createItems = (res, model, item) => {
   const Model = getModel(model);
 
   Model.create(item)
-    .then((itemCreated) => res.status(201).json(itemCreated))
+    .then((itemCreated) => {
+      delete itemCreated.dataValues.password;
+      res.status(201).json(itemCreated);
+    })
     .catch((error) => {
       const errorMessages = error.errors.map((err) => err.message);
       res.status(400).json({ errors: errorMessages });
