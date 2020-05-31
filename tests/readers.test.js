@@ -112,7 +112,7 @@ describe('/readers', () => {
         const response = await request(app).get('/readers/12345');
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The item could not be found.');
+        expect(response.body.error).to.equal('The reader could not be found.');
       });
     });
 
@@ -136,7 +136,7 @@ describe('/readers', () => {
           .send({ email: 'some_new_email@gmail.com' });
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The item could not be found.');
+        expect(response.body.error).to.equal('The reader could not be found.');
       });
     });
 
@@ -153,7 +153,7 @@ describe('/readers', () => {
       it('returns a 404 if the reader does not exist', async () => {
         const response = await request(app).delete('/readers/12345');
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The item could not be found.');
+        expect(response.body.error).to.equal('The reader could not be found.');
       });
     });
   });

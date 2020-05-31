@@ -1,9 +1,12 @@
-const { Reader, Book } = require('../models');
+const { Reader, Book, Author } = require('../models');
+
+const get404error = (model) => ({ error: `The ${model} could not be found.` });
 
 const getModel = (model) => {
   const models = {
     reader: Reader,
     book: Book,
+    author: Author,
   };
   return models[model];
 };
@@ -36,7 +39,7 @@ const updateItems = (res, model, item, id) => {
 
   Model.update(item, { where: { id } }).then(([recordsUpdated]) => {
     if (!recordsUpdated) {
-      res.status(404).json({ error: 'The item could not be found.' });
+      res.status(404).json(get404error(model));
     } else {
       Model.findByPk(id, { attributes: { exclude: ['password'] } }).then((updatedItem) => {
         res.status(200).json(updatedItem);
@@ -50,7 +53,7 @@ const getItemById = (res, model, id) => {
 
   Model.findByPk(id, { attributes: { exclude: ['password'] } }).then((item) => {
     if (!item) {
-      res.status(404).json({ error: 'The item could not be found.' });
+      res.status(404).json(get404error(model));
     } else {
       res.status(200).json(item);
     }
@@ -62,7 +65,7 @@ const deleteItemById = (res, model, id) => {
 
   Model.findByPk(id).then((foundItem) => {
     if (!foundItem) {
-      res.status(404).json({ error: 'The item could not be found.' });
+      res.status(404).json(get404error(model));
     } else {
       Model.destroy({ where: { id } }).then(() => {
         res.status(204).send();

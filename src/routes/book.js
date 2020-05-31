@@ -14,7 +14,4 @@ router
   .patch(bookController.updateBookById)
   .delete(bookController.deleteBookById);
 
-router
-  .route('/:genre');
-
 module.exports = router;

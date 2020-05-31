@@ -76,7 +76,7 @@ describe('/books', () => {
         });
       });
     });
-    describe('GET /books/:id,:title', () => {
+    describe('GET /books/:id', () => {
       it('gets books records by id', async () => {
         const book = books[0];
         const response = await request(app).get(`/books/${book.id}`);
@@ -86,10 +86,10 @@ describe('/books', () => {
         expect(response.body.author).to.equal(book.author);
       });
       it('returns a 404 if book is not found', async () => {
-        const response = await request(app).get('/books/700A');
+        const response = await request(app).get('/books/12345');
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The item could not be found.');
+        expect(response.body.error).to.equal('The book could not be found.');
       });
     });
     describe('PATCH /books/:id', () => {
@@ -111,7 +111,7 @@ describe('/books', () => {
           .send({ author: 'New Author' });
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The item could not be found.');
+        expect(response.body.error).to.equal('The book could not be found.');
       });
     });
     describe('DELETE /books/:id', () => {
@@ -125,10 +125,10 @@ describe('/books', () => {
         expect(deletedBook).to.equal(null);
       });
       it('returns a 404 if book is not found', async () => {
-        const response = await request(app).delete('/books/7000');
+        const response = await request(app).delete('/books/12345');
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal('The item could not be found.');
+        expect(response.body.error).to.equal('The book could not be found.');
       });
     });
   });
