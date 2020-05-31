@@ -16,6 +16,7 @@ describe('/authors', () => {
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
         });
+
         expect(response.status).to.equal(201);
         expect(response.body.author).to.equal('Stephen King');
         expect(newAuthorRecord.author).to.equal('Stephen King');
@@ -25,6 +26,7 @@ describe('/authors', () => {
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
         });
+
         expect(response.status).to.equal(400);
         expect(response.body.errors.length).to.equal(1);
         expect(newAuthorRecord).to.equal(null);
@@ -55,6 +57,7 @@ describe('/authors', () => {
       });
     });
   });
+
   describe('with no records in the database', () => {
     let authors;
 
@@ -62,12 +65,8 @@ describe('/authors', () => {
       await Author.destroy({ where: {} });
 
       authors = await Promise.all([
-        Author.create({
-          author: 'J. K. Rowling',
-        }),
-        Author.create({
-          author: 'F. Scott Fitzgerald',
-        }),
+        Author.create({ author: 'J. K. Rowling' }),
+        Author.create({ author: 'F. Scott Fitzgerald' }),
       ]);
     });
 
@@ -108,12 +107,12 @@ describe('/authors', () => {
         const response = await request(app)
           .patch(`/authors/${author.id}`)
           .send({ author: 'William Shakespeare' });
-        
+
         const updatedAuthorRecord = await Author.findByPk(author.id, {
           raw: true,
         });
         expect(response.status).to.equal(200);
-        expect(updatedAuthorRecord.author).to.equal('William Shakespeare')
+        expect(updatedAuthorRecord.author).to.equal('William Shakespeare');
       });
       it('returns a 404 if author does not exist', async () => {
         const response = await request(app).patch('/authors/12345');
@@ -136,6 +135,7 @@ describe('/authors', () => {
       });
       it('returns a 404 if author does not exist', async () => {
         const response = await request(app).delete('/authors/12345');
+
         expect(response.status).to.equal(404);
         expect(response.body.error).to.equal('The author could not be found.');
       });
