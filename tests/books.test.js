@@ -12,7 +12,6 @@ describe('/books', () => {
       it('creates a new book in the database', async () => {
         const response = await request(app).post('/books').send({
           title: 'A Song of Ice and Fire',
-          author: 'George R. R. Martin',
           genre: 'Fantasy',
           ISBN: '0-00-224584-1',
         });
@@ -22,18 +21,16 @@ describe('/books', () => {
         expect(response.status).to.equal(201);
         expect(response.body.title).to.equal('A Song of Ice and Fire');
         expect(newBookRecord.title).to.equal('A Song of Ice and Fire');
-        expect(newBookRecord.author).to.equal('George R. R. Martin');
         expect(newBookRecord.genre).to.equal('Fantasy');
         expect(newBookRecord.ISBN).to.equal('0-00-224584-1');
       });
       it('returns error if model fields are null', async () => {
-        const response = await request(app).post('/books').send({
-          title: 'A Song of Ice and Fire',
-        });
+        const response = await request(app).post('/books').send({});
         const newBookRecord = await Book.findByPk(response.body.id, {
           raw: true,
         });
         expect(response.status).to.equal(400);
+        expect(response.body.errors.length).to.equal(1);
         expect(newBookRecord).to.equal(null);
       });
     });
@@ -97,18 +94,18 @@ describe('/books', () => {
         const book = books[0];
         const response = await request(app)
           .patch(`/books/${book.id}`)
-          .send({ author: 'New Author' });
+          .send({ title: 'New Title' });
         const updatedBook = await Book.findByPk(book.id, {
           raw: true,
         });
 
         expect(response.status).to.equal(200);
-        expect(updatedBook.author).to.equal('New Author');
+        expect(updatedBook.title).to.equal('New Title');
       });
       it('returns a 404 if book is not found', async () => {
         const response = await request(app)
-          .patch('/books/7000')
-          .send({ author: 'New Author' });
+          .patch('/books/12345')
+          .send({ title: 'New Title' });
 
         expect(response.status).to.equal(404);
         expect(response.body.error).to.equal('The book could not be found.');
