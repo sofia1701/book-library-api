@@ -11,10 +11,19 @@ const getModel = (model) => {
   return models[model];
 };
 
+const modelOptions = (model) => {
+  if (model === 'book') return { include: Author };
+  if (model === 'author') return { include: Book };
+  return {};
+};
+
 const getAllItems = (res, model) => {
   const Model = getModel(model);
 
-  Model.findAll({ attributes: { exclude: ['password'] } }).then((allItems) => {
+  Model.findAll({
+    ...modelOptions(model),
+    attributes: { exclude: ['password'] },
+  }).then((allItems) => {
     res.status(200).json(allItems);
   });
 };
@@ -41,9 +50,11 @@ const updateItems = (res, model, item, id) => {
     if (!recordsUpdated) {
       res.status(404).json(get404error(model));
     } else {
-      Model.findByPk(id, { attributes: { exclude: ['password'] } }).then((updatedItem) => {
-        res.status(200).json(updatedItem);
-      });
+      Model.findByPk(id, { attributes: { exclude: ['password'] } }).then(
+        (updatedItem) => {
+          res.status(200).json(updatedItem);
+        }
+      );
     }
   });
 };
@@ -51,7 +62,10 @@ const updateItems = (res, model, item, id) => {
 const getItemById = (res, model, id) => {
   const Model = getModel(model);
 
-  Model.findByPk(id, { attributes: { exclude: ['password'] } }).then((item) => {
+  Model.findByPk(id, {
+    ...modelOptions(model),
+    attributes: { exclude: ['password'] },
+  }).then((item) => {
     if (!item) {
       res.status(404).json(get404error(model));
     } else {
