@@ -58,7 +58,7 @@ describe('/authors', () => {
     });
   });
 
-  describe('with no records in the database', () => {
+  describe('with records in the database', () => {
     let authors;
 
     beforeEach(async () => {
