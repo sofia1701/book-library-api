@@ -43,15 +43,12 @@ describe('/books', () => {
       books = await Promise.all([
         Book.create({
           title: 'The Highrise',
-          author: 'J.G. Ballard',
         }),
         Book.create({
           title: 'The Catcher In The Rye',
-          author: 'J.D. Salinger',
         }),
         Book.create({
           title: 'Brave New World',
-          author: 'Aldous Huxley',
         }),
       ]);
     });
@@ -67,7 +64,6 @@ describe('/books', () => {
           const expected = books.find((b) => b.id === book.id);
 
           expect(book.title).to.equal(expected.title);
-          expect(book.author).to.equal(expected.author);
         });
       });
     });
@@ -78,7 +74,6 @@ describe('/books', () => {
 
         expect(response.status).to.equal(200);
         expect(response.body.title).to.equal(book.title);
-        expect(response.body.author).to.equal(book.author);
       });
       it('returns a 404 if book is not found', async () => {
         const response = await request(app).get('/books/12345');
