@@ -10,9 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    genre: {
-      type: DataTypes.STRING,
-    },
     ISBN: {
       type: DataTypes.STRING,
     },

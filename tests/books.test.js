@@ -12,7 +12,6 @@ describe('/books', () => {
       it('creates a new book in the database', async () => {
         const response = await request(app).post('/books').send({
           title: 'A Song of Ice and Fire',
-          genre: 'Fantasy',
           ISBN: '0-00-224584-1',
         });
         const newBookRecord = await Book.findByPk(response.body.id, {
@@ -21,7 +20,6 @@ describe('/books', () => {
         expect(response.status).to.equal(201);
         expect(response.body.title).to.equal('A Song of Ice and Fire');
         expect(newBookRecord.title).to.equal('A Song of Ice and Fire');
-        expect(newBookRecord.genre).to.equal('Fantasy');
         expect(newBookRecord.ISBN).to.equal('0-00-224584-1');
       });
       it('returns error if model fields are null', async () => {
