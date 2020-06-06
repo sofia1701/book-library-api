@@ -3,6 +3,7 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { Reader } = require('../src/models');
 const app = require('../src/app');
+const helpers = require('./helpers.test');
 
 describe('/readers', () => {
   before(async () => Reader.sequelize.sync());
@@ -82,18 +83,7 @@ describe('/readers', () => {
 
     describe('GET /readers', () => {
       it('gets all readers records', async () => {
-        const response = await request(app).get('/readers');
-
-        expect(response.status).to.equal(200);
-        expect(response.body.length).to.equal(3);
-
-        response.body.forEach((reader) => {
-          const expected = readers.find((a) => a.id === reader.id);
-
-          expect(reader.name).to.equal(expected.name);
-          expect(reader.email).to.equal(expected.email);
-          expect(reader.password).to.equal(undefined);
-        });
+        await helpers.getAllRecords('readers', 200, 3, readers);
       });
     });
 

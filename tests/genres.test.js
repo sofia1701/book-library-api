@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { Genre } = require('../src/models');
 const app = require('../src/app');
+const helpers = require('./helpers.test');
 
 describe('/genres', () => {
   before(async () => Genre.sequelize.sync());
@@ -70,16 +71,7 @@ describe('/genres', () => {
 
     describe('GET /genres', () => {
       it('gets all genres records', async () => {
-        const response = await request(app).get('/genres');
-
-        expect(response.status).to.equal(200);
-        expect(response.body.length).to.equal(2);
-
-        response.body.forEach((genre) => {
-          const expected = genres.find((g) => g.id === genre.id);
-
-          expect(genre.genre).to.equal(expected.genre);
-        });
+        await helpers.getAllRecords('genres', 200, 2, genres);
       });
     });
 

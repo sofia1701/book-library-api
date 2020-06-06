@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     ISBN: {
       type: DataTypes.STRING,
+      unique: {
+        args: [true],
+        msg: 'ISBN must be unique',
+      },
     },
   };
 

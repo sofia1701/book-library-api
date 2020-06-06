@@ -3,6 +3,7 @@ const { expect } = require('chai');
 const request = require('supertest');
 const { Book } = require('../src/models');
 const app = require('../src/app');
+const helpers = require('./helpers.test');
 
 describe('/books', () => {
   before(async () => Book.sequelize.sync());
@@ -31,6 +32,31 @@ describe('/books', () => {
         expect(response.body.errors.length).to.equal(1);
         expect(newBookRecord).to.equal(null);
       });
+      it('returns an error if field is not unique', async () => {
+        const response1 = await request(app).post('/books').send({
+          title: 'Book',
+          ISBN: '978-3-16-148410-0',
+        });
+        const response2 = await request(app).post('/books').send({
+          title: 'Book',
+          ISBN: '978-3-16-148410-0',
+        });
+        const newBookRecord1 = await Book.findByPk(response1.body.id, {
+          raw: true,
+        });
+        const newBookRecord2 = await Book.findByPk(response2.body.id, {
+          raw: true,
+        });
+
+        expect(response1.status).to.equal(201);
+        expect(response2.status).to.equal(400);
+
+        expect(response1.body.errors).to.equal(undefined);
+        expect(response2.body.errors.length).to.equal(1);
+
+        expect(newBookRecord1.ISBN).to.equal('978-3-16-148410-0');
+        expect(newBookRecord2).to.equal(null);
+      });
     });
   });
 
@@ -55,16 +81,7 @@ describe('/books', () => {
 
     describe('GET /books', () => {
       it('gets all book records', async () => {
-        const response = await request(app).get('/books');
-
-        expect(response.status).to.equal(200);
-        expect(response.body.length).to.equal(3);
-
-        response.body.forEach((book) => {
-          const expected = books.find((b) => b.id === book.id);
-
-          expect(book.title).to.equal(expected.title);
-        });
+        await helpers.getAllRecords('books', 200, 3, books);
       });
     });
     describe('GET /books/:id', () => {
